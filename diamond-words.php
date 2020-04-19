@@ -1,66 +1,16 @@
 <?php
-
-echo "Input words: ";
-$input=input();
-$input=replace_polish_chars($input);
-
-if(validate_input($input))
-{
-    handle_words($input);
-}
-else
-{
-    echo 'Your input contains not allowed characters. Only letters are allowed. Please, try again.';
-}
-
-function input()
-{
-    $handle = fopen ("php://stdin","r");
-    $line = fgets($handle);
-    return $line;
-}
-
-function validate_input($input)
-{
-    $input_without_spaces = str_replace(' ','',trim($input));
-    if (ctype_alpha($input_without_spaces))
+    unset($argv[0]);
+    foreach($argv as $arg)
     {
-        return True;
-    }
-    else
-    {
-        return False;
-    }
-}
-
-function replace_polish_chars($alias)
-{
-    $alias = str_replace(array('Ą','ą', 'Ć','ć','Ę','ę','Ł','ł','Ń','ń', 'Ó','ó','Ś','ś','Ź','ź','Ż','ż'), array('Ą','a','C','c','E' ,'e','L', 'l', 'N','n','O', 'o','S', 's','Z', 'z', 'Z','z'), $alias);
-    return $alias;
-}
-
-function handle_words($input)
-{
-    $words = explode(" ", $input);
-    foreach($words as $word)
-    {
-        if(strlen(trim($word)) % 2 == 0)
-        {
-            draw_diamond($word,True);
-        }
-        else
-        {
-            draw_diamond($word, False);
-        }
+        draw_diamond($arg);
         echo '0'.PHP_EOL;
     }
-}
 
-function draw_diamond($word, $is_even)
+function draw_diamond($word)
 {
     $letters = str_split(trim($word));
     $result = array_fill(0,sizeof($letters)," ");
-    if($is_even)
+    if(strlen(trim($word)) % 2 == 0)
     {
         $middle = ((sizeof($letters))/2)-1;
         $result[$middle+1]=$letters[$middle+1];
@@ -91,7 +41,7 @@ function draw_diamond($word, $is_even)
         {
             $how_many_letters=$how_many_letters+2;
             
-            if($is_even)
+            if(strlen(trim($word)) % 2 == 0)
             {
                 $result[$middle+$i+1]=$letters[$middle+$i+1];
             }
